@@ -4,7 +4,7 @@ Aplikasi internal untuk merencanakan konten sosial media DenanavBeauty Salon.
 
 ## Phase 1
 
-Prototype HTML sudah dimigrasikan ke struktur Next.js App Router dengan TypeScript dan Tailwind CSS. Fokus Phase 1 adalah halaman **Rencana Konten** untuk membuat, membaca, dan menyiapkan kalender konten Instagram/Facebook.
+Homepage Next.js sekarang mengikuti prototype final `Denana_Social_Growth_OS (7).html`: navigasi Home, Profil Brand, Rencana Campaign, dan Rencana Konten dalam satu app entry. Fokus konten dibatasi untuk **Facial Treatment only**: Microdermabrasion, Hydra Peel, dan totok wajah.
 
 ## Menjalankan Project
 
@@ -15,13 +15,13 @@ npm run dev
 
 Buka `http://localhost:3000` untuk melihat aplikasi.
 
-## Struktur Utama
+## Fitur Utama
 
-- `app/` — App Router entrypoint, layout global, dan styling global.
-- `components/` — Komponen UI reusable seperti sidebar, header, planner, kartu konten, kalender, empty state, dan button.
-- `data/` — Sample generated content untuk Phase 1.
-- `types/` — TypeScript types untuk data konten.
+- Profil Brand editable dengan default value DenanavBeauty Salon dan penyimpanan localStorage.
+- Rencana Campaign editable dengan campaign period, awareness goal, Instagram, dan Facebook.
+- Rencana Konten 30 hari dengan table editable, filter pillar/format, copy calendar, export CSV, regenerate content, detail modal, dan draft localStorage.
+- Styling putih dan gold dengan sticky header, layout bersih, dan table lebar untuk halaman Rencana Konten.
 
 ## Catatan Phase 2
 
-Tombol generate, copy, edit, dan export masih berupa placeholder visual. Phase berikutnya dapat menambahkan integrasi AI, penyimpanan konten, dan fitur export nyata tanpa mengubah struktur UI utama.
+Phase 1 belum memakai autentikasi, database, atau AI API. Struktur state dan localStorage sudah siap untuk diganti dengan API, penyimpanan permanen, dan generator AI pada fase berikutnya.
