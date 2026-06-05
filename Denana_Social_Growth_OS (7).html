@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Denana Social Growth OS — DenanavBeauty Salon</title>
+<style>
+/*
+ * _base.css — Global design tokens, element defaults, page shell, and tiny utilities.
+ * ALWAYS included in every page.
+ *
+ * Provides:
+ *   :root variables (light + dark), box-sizing, html/body,
+ *   element defaults (button, input, select, textarea, label, fieldset, legend,
+ *   a, hr, img, h1-h4, p, ul/ol/li, blockquote, table/th/td, details/summary,
+ *   pre/code), main / .notion-shell, utility classes, .notion-footer,
+ *   reduced-motion and responsive breakpoints for base elements.
+ */
+
+:root {
+	color-scheme: light dark;
+	--notion-bg: #ffffff;
+	--notion-bg-soft: #f9f9f8;
+	--notion-surface: #ffffff;
+	--notion-surface-hover: #f6f5f4;
+	--notion-text: #191918;
+	--notion-text-soft: rgba(0, 0, 0, 0.54);
+	--notion-text-faint: rgba(0, 0, 0, 0.3);
+	--notion-border: rgba(0, 0, 0, 0.1);
+	--notion-border-soft: rgba(0, 0, 0, 0.05);
+	--notion-shadow:
+		0px 0.7px 1.462px rgba(0, 0, 0, 0.015), 0px 3px 9px rgba(0, 0, 0, 0.03);
+	--notion-blue: #2783de;
+	--notion-orange: #d5803b;
+	--notion-red: #e56458;
+	--notion-blue-bg: #f3f9fd;
+	--notion-yellow-bg: #fcfaef;
+	--notion-orange-bg: #fcf7f4;
+	--notion-green-bg: #f6f9f7;
+	--notion-red-bg: #fdf6f6;
+	--notion-gray-bg: #f9f8f7;
+	--notion-radius: 8px;
+	--notion-page-width: 900px;
+	--notion-chart-1: #5e9fe8;
+	--notion-chart-2: #eac26b;
+	--notion-chart-3: #72bc8f;
+	--notion-chart-4: #bf8eda;
+	--notion-chart-5: #de9255;
+	--notion-chart-6: #df84a8;
+	--notion-chart-7: #4fb9c9;
+	--notion-chart-8: #e97366;
+	--diff-add: #47c1b6;
+	--diff-del: #f07070;
+	--pr-approved: #2b8a3e;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--notion-bg: #000000;
+		--notion-bg-soft: #191918;
+		--notion-surface: #191918;
+		--notion-surface-hover: #31302e;
+		--notion-text: #ffffff;
+		--notion-text-soft: rgba(255, 255, 255, 0.5);
+		--notion-text-faint: rgba(255, 255, 255, 0.3);
+		--notion-border: rgba(255, 255, 255, 0.2);
+		--notion-border-soft: rgba(255, 255, 255, 0.1);
+		--notion-shadow:
+			0px 0.7px 1.462px rgba(0, 0, 0, 0.06), 0px 3px 9px rgba(0, 0, 0, 0.12);
+		--notion-blue: #5e9fe8;
+		--notion-orange: #de9255;
+		--notion-red: #e97366;
+		--notion-blue-bg: rgba(41, 139, 253, 0.061);
+		--notion-yellow-bg: rgba(203, 145, 47, 0.08);
+		--notion-orange-bg: rgba(246, 126, 35, 0.08);
+		--notion-green-bg: rgba(42, 157, 118, 0.08);
+		--notion-red-bg: rgba(246, 73, 50, 0.08);
+		--notion-gray-bg: #31302e;
+		--diff-add: #5dd8cb;
+		--diff-del: #ff8a80;
+		--pr-approved: #69db7c;
+	}
+}
+
+* {
+	box-sizing: border-box;
+}
+html {
+	scroll-behavior: smooth;
+}
+body {
+	margin: 0;
+	background: var(--notion-bg);
+	color: var(--notion-text);
+	font-family:
+		ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+		"Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+	font-size: 16px;
+	line-height: 1.5;
+	transition:
+		background 180ms ease,
+		color 180ms ease;
+}
+
+/* -- Base element defaults -------------------------------- */
+button,
+[type="button"],
+[type="submit"],
+[type="reset"] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 8px 16px;
+	font: inherit;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.2;
+	color: #ffffff;
+	background: var(--notion-blue);
+	border: 1px solid transparent;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background 150ms;
+	white-space: nowrap;
+}
+button:hover,
+[type="button"]:hover,
+[type="submit"]:hover,
+[type="reset"]:hover {
+	background: color-mix(in srgb, var(--notion-blue) 82%, black);
+}
+button:focus-visible,
+[type="button"]:focus-visible,
+[type="submit"]:focus-visible,
+[type="reset"]:focus-visible {
+	outline: 2px solid var(--notion-blue);
+	outline-offset: 2px;
+}
+
+input,
+select,
+textarea {
+	font: inherit;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--notion-text);
+	background: var(--notion-surface);
+	border: 1px solid var(--notion-border);
+	border-radius: 8px;
+	padding: 8px 12px;
+	transition: border-color 150ms;
+}
+input:focus,
+select:focus,
+textarea:focus {
+	outline: none;
+	border-color: var(--notion-blue);
+	box-shadow: 0 0 0 2px rgba(9, 127, 232, 0.15);
+}
+input::placeholder,
+textarea::placeholder {
+	color: var(--notion-text-faint);
+}
+select {
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' fill='none' stroke='%23999' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	padding-right: 30px;
+}
+textarea {
+	resize: vertical;
+	min-height: 80px;
+}
+input[type="range"] {
+	border: none;
+	padding: 0;
+	background: transparent;
+	accent-color: var(--notion-blue);
+	height: 18px;
+	cursor: pointer;
+	box-shadow: none;
+}
+input[type="range"]:focus {
+	box-shadow: none;
+}
+input[type="checkbox"],
+input[type="radio"] {
+	width: 16px;
+	height: 16px;
+	accent-color: var(--notion-blue);
+	border: 1px solid var(--notion-border);
+	padding: 0;
+	cursor: pointer;
+}
+label {
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--notion-text);
+	margin-bottom: 6px;
+}
+fieldset {
+	border: 1px solid var(--notion-border-soft);
+	border-radius: 10px;
+	padding: 16px;
+	margin: 0;
+}
+legend {
+	font-weight: 600;
+	padding: 0 4px;
+}
+
+a {
+	color: var(--notion-text);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	text-decoration-color: var(--notion-border);
+}
+a:hover {
+	text-decoration-color: var(--notion-text);
+}
+
+hr {
+	height: 1px;
+	margin: 34px 0;
+	border: none;
+	background: var(--notion-border-soft);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	text-wrap: balance;
+}
+h1 {
+	margin: 0 0 14px;
+	font-size: clamp(42px, 7vw, 72px);
+	line-height: 1.1;
+	letter-spacing: -0.035em;
+	font-weight: 700;
+}
+h2 {
+	margin: 44px 0 10px;
+	font-size: 32px;
+	line-height: 1.25;
+	letter-spacing: -0.025em;
+}
+h3 {
+	margin: 0 0 6px;
+	font-size: 18px;
+	line-height: 1.556;
+	letter-spacing: -0.007em;
+}
+p {
+	margin: 0 0 10px;
+}
+
+ul,
+ol {
+	margin: 8px 0 16px;
+	padding-left: 24px;
+}
+li {
+	margin-bottom: 4px;
+}
+li::marker {
+	color: var(--notion-text-faint);
+}
+
+blockquote {
+	border-left: 3px solid var(--notion-text);
+	padding: 4px 0 4px 16px;
+	margin: 24px 0;
+}
+blockquote p {
+	font-size: 18px;
+	line-height: 1.5;
+	margin: 0;
+}
+
+table {
+	width: 100%;
+	margin: 14px 0;
+	border-collapse: separate;
+	border-spacing: 0;
+	border: 1px solid var(--notion-border-soft);
+	border-radius: 10px;
+	overflow: hidden;
+	background: var(--notion-surface);
+	font-size: 14px;
+}
+th,
+td {
+	padding: 12px 14px;
+	vertical-align: top;
+	text-align: left;
+	border-right: 1px solid var(--notion-border-soft);
+	border-bottom: 1px solid var(--notion-border-soft);
+}
+th:last-child,
+td:last-child {
+	border-right: 0;
+}
+tr:last-child td {
+	border-bottom: 0;
+}
+th {
+	background: var(--notion-bg-soft);
+	color: var(--notion-text-soft);
+	font-weight: 600;
+}
+
+details {
+	margin: 16px 0;
+	border-radius: var(--notion-radius);
+}
+summary {
+	padding: 8px 10px;
+	border-radius: var(--notion-radius);
+	cursor: pointer;
+	font-weight: 600;
+}
+summary:hover {
+	background: var(--notion-surface-hover);
+}
+details p {
+	margin: 8px 10px 0 28px;
+	color: var(--notion-text-soft);
+}
+
+pre,
+code {
+	font-family: ui-monospace, "iA Writer Mono", Nitti, Menlo, Courier, monospace;
+}
+pre {
+	margin: 16px 0;
+	padding: 14px 16px;
+	overflow-x: auto;
+	border: 1px solid var(--notion-border-soft);
+	border-radius: 10px;
+	background: var(--notion-gray-bg);
+	font-size: 13px;
+	line-height: 1.55;
+}
+code {
+	font-size: 0.9em;
+	padding: 2px 5px;
+	border-radius: 4px;
+	background: var(--notion-gray-bg);
+}
+pre code {
+	font-size: inherit;
+	padding: 0;
+	border-radius: 0;
+	background: none;
+}
+
+main {
+	max-width: var(--notion-page-width);
+	margin: 0 auto;
+	padding: 76px 24px 88px;
+}
+
+section {
+	margin-top: 44px;
+}
+section:first-child {
+	margin-top: 0;
+}
+
+/* -- Page shell ------------------------------------------- */
+.notion-shell {
+	max-width: var(--notion-page-width);
+	margin: 0 auto;
+	padding: 76px 24px 88px;
+}
+
+/* -- Tiny utilities --------------------------------------- */
+.notion-lede {
+	max-width: 720px;
+	margin: 0 0 24px;
+	color: var(--notion-text-soft);
+	font-size: 20px;
+}
+.notion-muted {
+	color: var(--notion-text-soft);
+}
+.notion-faint {
+	color: var(--notion-text-faint);
+}
+.notion-divider {
+	height: 1px;
+	margin: 34px 0;
+	background: var(--notion-border-soft);
+}
+.notion-eyebrow {
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.0078125rem;
+	text-transform: uppercase;
+	color: var(--notion-blue);
+}
+
+/* -- Footer ----------------------------------------------- */
+.notion-footer {
+	margin-top: 52px;
+	padding-top: 18px;
+	border-top: 1px solid var(--notion-border-soft);
+	color: var(--notion-text-faint);
+	font-size: 13px;
+}
+
+/* -- Accessibility & motion ------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* -- Responsive: 560px (base elements) -------------------- */
+@media (max-width: 560px) {
+	main,
+	.notion-shell {
+		padding-inline: 16px;
+	}
+	table {
+		display: block;
+		overflow-x: auto;
+	}
+}
+/* Denana Social Growth OS — white & gold theme overrides on top of _base.css */
+:root{
+  color-scheme: light;
+  --notion-bg:#fdfcfa;
+  --notion-bg-soft:#faf7f1;
+  --notion-surface:#ffffff;
+  --notion-surface-hover:#fbf7ee;
+  --notion-text:#2b2722;
+  --notion-text-soft:#7a7468;
+  --notion-text-faint:#b3ac9e;
+  --notion-border:rgba(180,150,80,0.22);
+  --notion-border-soft:rgba(180,150,80,0.14);
+  --notion-shadow:0px 1px 2px rgba(150,120,40,0.04),0px 8px 24px rgba(150,120,40,0.06);
+  --gold:#c9a13b;
+  --gold-soft:#e7d199;
+  --gold-deep:#a8841f;
+  --gold-bg:#fbf6ea;
+  --notion-blue:#c9a13b; /* repurpose accent to gold */
+  --notion-radius:14px;
+  --notion-page-width:1080px;
+  --page-width-standard:1080px;
+  --page-width-wide:1440px;
+}
+@media (prefers-color-scheme: dark){:root{
+  color-scheme:light;
+  --notion-bg:#fdfcfa;--notion-bg-soft:#faf7f1;--notion-surface:#ffffff;--notion-surface-hover:#fbf7ee;
+  --notion-text:#2b2722;--notion-text-soft:#7a7468;--notion-text-faint:#b3ac9e;
+  --notion-border:rgba(180,150,80,0.22);--notion-border-soft:rgba(180,150,80,0.14);
+}}
+
+body{font-size:15px;}
+button,[type=button],[type=submit],[type=reset]{background:var(--gold);border-radius:10px;}
+button:hover,[type=button]:hover,[type=submit]:hover,[type=reset]:hover{background:var(--gold-deep);}
+button:focus-visible{outline-color:var(--gold);}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,161,59,0.15);}
+a{color:var(--gold-deep);}
+.notion-eyebrow{color:var(--gold-deep);letter-spacing:.12em;}
+h1{font-size:clamp(30px,5vw,46px);font-weight:700;letter-spacing:-0.02em;}
+h2{font-size:24px;margin:0 0 8px;}
+h3{font-size:16px;}
+
+/* ---- App layout ---- */
+.app-header{position:sticky;top:0;z-index:40;background:rgba(253,252,250,0.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--notion-border-soft);}
+.app-header-inner{max-width:var(--page-width-standard);margin:0 auto;display:flex;align-items:center;gap:18px;padding:14px 24px;transition:max-width .2s ease;}
+.brand-mark{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:-0.01em;font-size:16px;}
+.brand-logo{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;background:linear-gradient(135deg,#e7d199,#c9a13b 60%,#a8841f);box-shadow:0 2px 8px rgba(168,132,31,.35);font-size:15px;}
+.brand-mark small{display:block;font-weight:500;font-size:11px;color:var(--notion-text-soft);letter-spacing:.04em;}
+.app-nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;}
+.nav-link{font-size:13.5px;font-weight:600;color:var(--notion-text-soft);text-decoration:none;padding:7px 13px;border-radius:9px;border:1px solid transparent;transition:all .15s;}
+.nav-link:hover{background:var(--gold-bg);color:var(--gold-deep);}
+.nav-link.active{background:var(--gold-bg);color:var(--gold-deep);border-color:var(--notion-border);}
+.shell{max-width:var(--page-width-standard);margin:0 auto;padding:36px 24px 90px;transition:max-width .2s ease;}
+/* Wide workspace layout: only the Rencana Konten page widens to give the table more room */
+body.wide-page .shell,body.wide-page .app-header-inner{max-width:var(--page-width-wide);}
+.page-head{margin-bottom:26px;}
+.page-head p{color:var(--notion-text-soft);max-width:640px;margin:6px 0 0;}
+
+/* ---- Cards ---- */
+.card{background:var(--notion-surface);border:1px solid var(--notion-border-soft);border-radius:var(--notion-radius);box-shadow:var(--notion-shadow);padding:22px;}
+.card+.card{margin-top:18px;}
+.grid{display:grid;gap:16px;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+@media(max-width:820px){.grid-3,.grid-2{grid-template-columns:1fr;}}
+
+.status-card{display:flex;flex-direction:column;gap:10px;}
+.status-card .ico{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:20px;background:var(--gold-bg);}
+.status-card h3{margin:0;}
+.status-pill{align-self:flex-start;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em;}
+.status-pill.ok{background:#eef7ef;color:#3c7a45;}
+.status-pill.warn{background:#fdf3e3;color:#a8841f;}
+
+/* ---- Buttons ---- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 16px;font-size:13.5px;font-weight:600;border-radius:10px;border:1px solid transparent;cursor:pointer;background:var(--gold);color:#fff;transition:all .15s;text-decoration:none;}
+.btn:hover{background:var(--gold-deep);}
+.btn.secondary{background:#fff;color:var(--gold-deep);border-color:var(--notion-border);}
+.btn.secondary:hover{background:var(--gold-bg);}
+.btn.ghost{background:transparent;color:var(--notion-text-soft);border-color:var(--notion-border-soft);}
+.btn.ghost:hover{background:var(--notion-surface-hover);color:var(--notion-text);}
+.btn.small{padding:6px 11px;font-size:12.5px;border-radius:8px;}
+.btn.tiny{padding:4px 9px;font-size:11.5px;border-radius:7px;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+
+/* ---- Forms ---- */
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 20px;}
+@media(max-width:720px){.form-grid{grid-template-columns:1fr;}}
+.field{display:flex;flex-direction:column;}
+.field.full{grid-column:1/-1;}
+.field label{margin-bottom:5px;}
+.field .hint{font-size:12px;color:var(--notion-text-faint);font-weight:400;margin:5px 0 0;}
+.field .req{color:var(--gold-deep);}
+.field input,.field select,.field textarea{width:100%;}
+.field.invalid input,.field.invalid textarea,.field.invalid select{border-color:#d98b6a;box-shadow:0 0 0 3px rgba(217,139,106,.13);}
+.chips{display:flex;flex-wrap:wrap;gap:7px;}
+.chip{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--gold-bg);color:var(--gold-deep);border:1px solid var(--notion-border-soft);}
+
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:#2b2722;color:#fff;padding:12px 20px;border-radius:12px;font-size:13.5px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:all .25s;z-index:90;display:flex;gap:9px;align-items:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast .dot{width:8px;height:8px;border-radius:50%;background:var(--gold-soft);}
+
+/* ---- Empty state ---- */
+.empty{text-align:center;padding:46px 20px;border:1px dashed var(--notion-border);border-radius:var(--notion-radius);background:var(--notion-bg-soft);}
+.empty .big{font-size:34px;margin-bottom:8px;}
+.empty p{color:var(--notion-text-soft);max-width:440px;margin:6px auto 16px;}
+
+/* ---- Calendar table ---- */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;}
+.toolbar .spacer{flex:1;}
+.toolbar select{padding:7px 28px 7px 11px;font-size:13px;}
+.cal-wrap{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;position:relative;border:1px solid var(--notion-border-soft);border-radius:var(--notion-radius);background:#fff;}
+table.cal{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;margin:0;border:none;border-radius:0;font-size:12.5px;min-width:820px;}
+/* Fixed column widths so the table fits the page; long text wraps inside cells */
+table.cal th:nth-child(1),table.cal td:nth-child(1){width:74px;}
+table.cal th:nth-child(2),table.cal td:nth-child(2){width:92px;}
+table.cal th:nth-child(3),table.cal td:nth-child(3){width:116px;}
+table.cal th:nth-child(5),table.cal td:nth-child(5){width:148px;}
+table.cal th:nth-child(6),table.cal td:nth-child(6){width:100px;}
+table.cal th:nth-child(7),table.cal td:nth-child(7){width:108px;}
+table.cal th:nth-child(8),table.cal td:nth-child(8){width:96px;}
+table.cal td .pill{white-space:normal;line-height:1.25;}
+table.cal th{background:var(--gold-bg);color:var(--gold-deep);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em;padding:9px 9px;position:sticky;top:0;}
+table.cal td{padding:8px 9px;border-bottom:1px solid var(--notion-border-soft);border-right:none;vertical-align:top;word-break:break-word;overflow-wrap:anywhere;}
+table.cal tr:hover td{background:var(--gold-bg);}
+table.cal td.date{white-space:nowrap;font-weight:600;}
+table.cal td.date small{display:block;font-weight:500;color:var(--notion-text-faint);}
+/* Sticky right-hand action column so the Aksi buttons are never clipped */
+table.cal th:last-child,table.cal td:last-child{position:sticky;right:0;width:96px;}
+table.cal td:last-child{background:#fff;z-index:2;box-shadow:-7px 0 8px -7px rgba(0,0,0,.16);}
+table.cal th:last-child{top:0;background:var(--gold-bg);z-index:4;box-shadow:-7px 0 8px -7px rgba(0,0,0,.16);}
+table.cal tr:hover td:last-child{background:var(--gold-bg);}
+.cell-input,.cell-select{width:100%;font-size:12.5px;padding:5px 7px;border:1px solid transparent;background:transparent;border-radius:7px;}
+.cell-input:hover,.cell-select:hover{border-color:var(--notion-border-soft);background:#fff;}
+textarea.cell-input{min-height:34px;resize:vertical;line-height:1.35;}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+.pill-Facial{background:#eaf3fb;color:#2f6fa8;}
+.pill-Skin{background:#fbeef0;color:#b25a72;}
+.pill-Treatment{background:#eef7ef;color:#3c7a45;}
+.pill-Testimonial{background:#f3eefb;color:#7a5aa8;}
+.pill-Promo{background:#fbf6ea;color:#a8841f;}
+.row-actions{display:flex;flex-direction:column;gap:5px;align-items:stretch;}
+.row-actions .btn{white-space:nowrap;justify-content:center;padding:5px 8px;font-size:12px;}
+.row-actions .btn.tiny{padding:3px 6px;font-size:11px;}
+
+/* ---- Modal ---- */
+.modal-overlay{position:fixed;inset:0;background:rgba(43,39,34,.42);backdrop-filter:blur(3px);z-index:80;display:flex;justify-content:center;align-items:flex-start;padding:40px 18px;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-overlay.show{opacity:1;pointer-events:auto;}
+.modal{background:var(--notion-surface);border-radius:18px;max-width:760px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.3);overflow:hidden;}
+.modal-head{display:flex;align-items:flex-start;gap:14px;padding:22px 24px;border-bottom:1px solid var(--notion-border-soft);background:linear-gradient(180deg,var(--gold-bg),#fff);}
+.modal-head .mt{flex:1;}
+.modal-head h2{margin:0;font-size:19px;}
+.modal-head .meta{font-size:12.5px;color:var(--notion-text-soft);margin-top:4px;}
+.modal-body{padding:22px 24px;max-height:64vh;overflow-y:auto;}
+.modal-foot{padding:16px 24px;border-top:1px solid var(--notion-border-soft);display:flex;gap:10px;justify-content:flex-end;background:var(--notion-bg-soft);}
+.x-btn{background:transparent;color:var(--notion-text-soft);border:1px solid var(--notion-border-soft);width:32px;height:32px;padding:0;border-radius:9px;font-size:17px;}
+.x-btn:hover{background:#fff;color:var(--notion-text);}
+.detail-block{margin-bottom:18px;}
+.detail-block .dh{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+.detail-block .dh h3{margin:0;flex:1;}
+.detail-box{background:var(--notion-bg-soft);border:1px solid var(--notion-border-soft);border-radius:11px;padding:14px 16px;font-size:13.5px;line-height:1.55;white-space:pre-wrap;}
+.script-step{display:grid;grid-template-columns:74px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--notion-border-soft);}
+.script-step:last-child{border-bottom:none;}
+.script-step .t{font-weight:700;color:var(--gold-deep);font-size:12.5px;}
+.script-step .vo{font-size:13px;}
+.script-step .ov{font-size:12px;color:var(--notion-text-soft);margin-top:3px;}
+.tag-list{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{font-size:12px;background:var(--gold-bg);color:var(--gold-deep);padding:4px 9px;border-radius:7px;font-weight:600;}
+.chk{list-style:none;padding:0;margin:0;}
+.chk li{display:flex;gap:9px;padding:5px 0;font-size:13.5px;}
+.chk li::before{content:'\2713';color:var(--gold-deep);font-weight:700;}
+
+.note{background:var(--gold-bg);border:1px solid var(--notion-border-soft);border-radius:12px;padding:14px 16px;display:flex;gap:11px;font-size:13.5px;color:var(--notion-text-soft);}
+.note .ni{font-size:18px;}
+.kv{display:grid;grid-template-columns:160px 1fr;gap:6px 16px;font-size:13.5px;}
+.kv dt{color:var(--notion-text-soft);font-weight:600;}
+.kv dd{margin:0;}
+@media(max-width:560px){.kv{grid-template-columns:1fr;gap:2px 0;}.kv dd{margin-bottom:8px;}}
+.footer-note{margin-top:50px;padding-top:18px;border-top:1px solid var(--notion-border-soft);color:var(--notion-text-faint);font-size:12.5px;text-align:center;}
+
+/* ===== Refinement additions (draft system + modal polish) ===== */
+.draft-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--gold-deep);background:var(--gold-bg);border:1px solid var(--gold-soft);padding:2px 8px;border-radius:999px;letter-spacing:.2px;}
+.detail-block .dh{display:flex;align-items:center;gap:9px;margin:0 0 10px;}
+.detail-block .dh h3{margin:0;flex:1;font-size:15px;}
+.detail-block .dh .copy-btn{flex:0 0 auto;}
+.sec-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#fff;font-size:12px;font-weight:700;flex:0 0 auto;}
+.sec-ico{font-size:15px;flex:0 0 auto;}
+.modal-foot{flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;}
+.copy-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.foot-main{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:auto;}
+.note[data-tone="saved"]{background:#f3f9f1;border-color:#cfe6c7;}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="app-header-inner">
+    <div class="brand-mark">
+      <span class="brand-logo">D</span>
+      <span>Denana Social Growth OS<small>DenanavBeauty Salon · Facial Treatment</small></span>
+    </div>
+    <nav class="app-nav">
+      <a class="nav-link" data-route="home" href="#home">Home</a>
+      <a class="nav-link" data-route="brand-setup" href="#brand-setup">Profil Brand</a>
+      <a class="nav-link" data-route="campaign-setup" href="#campaign-setup">Rencana Campaign</a>
+      <a class="nav-link" data-route="content-calendar" href="#content-calendar">Rencana Konten</a>
+    </nav>
+  </div>
+</header>
+<main class="shell" id="view"></main>
+<script>
+/* ============================================================
+   Denana Social Growth OS — Phase 1 (MVP)
+   Internal social media planner for DenanavBeauty Salon.
+   Scope: Facial Treatment only (Microdermabrasion, Hydra Peel, Totok wajah).
+   No backend, no auth, no database. Data persists in localStorage.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ---------- Storage keys ---------- */
+  var STORAGE_KEYS = {
+    brandSnapshot: 'denana_brand_snapshot',
+    campaign: 'denana_campaign',
+    contentCalendar: 'denana_content_calendar',
+    contentDrafts: 'denana_content_drafts'
+  };
+
+  /* ---------- Defaults ---------- */
+  var defaultBrandSnapshot = {
+    businessName: 'DenanavBeauty Salon',
+    instagramHandle: '',
+    area: 'Kota Bima, NTB dan sekitarnya',
+    niche: 'Beauty salon lokal dengan fokus pada facial treatment dan perawatan wajah.',
+    targetAudience: 'Wanita di Kota Bima dan sekitarnya yang ingin wajah terlihat lebih fresh, bersih, dan percaya diri melalui facial treatment yang nyaman dan modern.',
+    mainService: 'Facial Treatment',
+    serviceDetails: 'Microdermabrasion facial treatment\nHydra Peel\nTotok wajah',
+    entryPrice: 'Rp350.000',
+    usp: 'DenanavBeauty Salon membantu customer tampil lebih fresh, bersih, dan percaya diri melalui facial treatment yang nyaman, modern, dan mudah diakses di Kota Bima.',
+    primaryCTA: 'Booking via website atau contact via WhatsApp',
+    ctaLink: '',
+    websiteLink: '',
+    primaryColor: 'White',
+    secondaryColor: 'Gold',
+    visualStyle: 'Clean minimal',
+    toneOfVoice: 'Friendly, reassuring, clean, professional, edukatif, dan tidak terlalu hard selling.',
+    tagline: 'Wajah lebih fresh, percaya diri setiap hari.',
+    platforms: 'Instagram, Facebook',
+    contentPillars: 'Facial Education\nSkin Concern & Solution\nTreatment Experience\nTestimonial & Trust\nPromo & Booking Awareness'
+  };
+
+  function defaultCampaign() {
+    var start = new Date();
+    var end = new Date();
+    end.setDate(end.getDate() + 29);
+    return {
+      campaignName: 'Facial Awareness Campaign',
+      periodStart: toISO(start),
+      periodEnd: toISO(end),
+      priorityService: 'Facial Treatment',
+      campaignGoal: 'Awareness',
+      mainPlatform: 'Instagram dan Facebook',
+      postingFrequency: '1 konten per hari selama 30 hari',
+      notes: 'Fokus bulan pertama adalah edukasi, awareness, trust building, dan pengenalan treatment facial.'
+    };
+  }
+
+  /* ---------- Brand field metadata (labels + helper text) ---------- */
+  var REQUIRED_FIELDS = ['businessName', 'area', 'mainService', 'entryPrice', 'primaryCTA', 'visualStyle', 'contentPillars'];
+  var BRAND_FIELDS = [
+    { key: 'businessName', label: 'Nama Bisnis', hint: 'Nama salon yang tampil di konten.', req: true },
+    { key: 'instagramHandle', label: 'Instagram Handle', hint: 'Contoh: @denanavbeauty (opsional).' },
+    { key: 'area', label: 'Area Target', hint: 'Wilayah utama yang ingin dijangkau.', req: true },
+    { key: 'niche', label: 'Niche', hint: 'Fokus utama bisnis dalam satu kalimat.', type: 'textarea' },
+    { key: 'targetAudience', label: 'Target Audience', hint: 'Siapa yang ingin dijangkau lewat konten.', type: 'textarea' },
+    { key: 'mainService', label: 'Layanan Utama', hint: 'Untuk MVP ini hanya Facial Treatment.', req: true },
+    { key: 'serviceDetails', label: 'Detail Layanan Facial', hint: 'Satu layanan per baris. Hanya layanan facial.', type: 'textarea' },
+    { key: 'entryPrice', label: 'Harga Mulai', hint: 'Harga entry treatment.', req: true },
+    { key: 'usp', label: 'USP (Keunggulan)', hint: 'Apa yang membuat salon berbeda.', type: 'textarea' },
+    { key: 'primaryCTA', label: 'CTA Utama', hint: 'Ajakan utama untuk audience.', req: true },
+    { key: 'ctaLink', label: 'Link Booking / WhatsApp', hint: 'Kosongkan dulu jika belum ada.' },
+    { key: 'websiteLink', label: 'Website', hint: 'Link website jika tersedia (opsional).' },
+    { key: 'primaryColor', label: 'Warna Utama', hint: 'Warna brand utama.' },
+    { key: 'secondaryColor', label: 'Warna Sekunder', hint: 'Warna aksen brand.' },
+    { key: 'visualStyle', label: 'Gaya Visual', hint: 'Mood visual konten.', req: true },
+    { key: 'toneOfVoice', label: 'Tone of Voice', hint: 'Gaya bahasa saat berkomunikasi.', type: 'textarea' },
+    { key: 'tagline', label: 'Tagline', hint: 'Kalimat singkat khas brand.' },
+    { key: 'platforms', label: 'Platform', hint: 'Platform sosial media yang dipakai.' },
+    { key: 'contentPillars', label: 'Content Pillars', hint: 'Satu pilar per baris.', type: 'textarea', req: true }
+  ];
+
+  /* ---------- Pillars ---------- */
+  var PILLARS = ['Facial Education', 'Skin Concern & Solution', 'Treatment Experience', 'Testimonial & Trust', 'Promo & Booking Awareness'];
+  // 30-day ratio: 40/25/15/10/10 -> 12 / 8 / 4 / 3 / 3
+  var PILLAR_PLAN = [
+    { pillar: 'Facial Education', count: 12 },
+    { pillar: 'Skin Concern & Solution', count: 8 },
+    { pillar: 'Treatment Experience', count: 4 },
+    { pillar: 'Testimonial & Trust', count: 3 },
+    { pillar: 'Promo & Booking Awareness', count: 3 }
+  ];
+  function pillarShort(p) {
+    return { 'Facial Education': 'Facial', 'Skin Concern & Solution': 'Skin', 'Treatment Experience': 'Treatment', 'Testimonial & Trust': 'Testimonial', 'Promo & Booking Awareness': 'Promo' }[p] || 'Facial';
+  }
+
+  var FORMATS = ['Reels', 'Carousel', 'Single Post', 'Stories', 'Live'];
+  // First-week format mix: 2 Reels, 2 Carousel, 2 Stories, 1 Single Post (no back-to-back Reels).
+  var FIRST_WEEK_FORMATS = ['Reels', 'Carousel', 'Stories', 'Reels', 'Single Post', 'Carousel', 'Stories'];
+  var OBJECTIVES = ['Awareness', 'Engagement', 'Trust', 'Booking'];
+  var STATUSES = ['Idea', 'Planned', 'In Production', 'Posted'];
+
+  /* ---------- Facial-only content banks (Bahasa Indonesia) ---------- */
+  var TOPIC_BANK = {
+    'Facial Education': [
+      { t: 'Apa itu Hydra Peel dan kapan wajah membutuhkannya?', h: 'Sering dengar Hydra Peel tapi belum tahu fungsinya?', f: 'Reels' },
+      { t: 'Cara menjaga wajah tetap fresh di cuaca Bima', h: 'Tips sederhana menjaga wajah tetap fresh di cuaca Bima.', f: 'Single Post' },
+      { t: 'Mempersiapkan wajah sebelum acara penting', h: 'Ada acara penting? Yuk siapkan wajahmu dari jauh hari.', f: 'Carousel' },
+      { t: 'Mengenal Microdermabrasion untuk wajah lebih halus', h: 'Kulit terasa kasar? Yuk kenali Microdermabrasion.', f: 'Carousel' },
+      { t: 'Manfaat totok wajah sebagai bagian relaksasi', h: 'Totok wajah bukan cuma soal cantik, tapi juga rileks.', f: 'Reels' },
+      { t: 'Kapan sebaiknya wajah mulai rutin facial treatment?', h: 'Bingung kapan waktu yang pas untuk facial?', f: 'Single Post' },
+      { t: 'Bedanya facial biasa dan facial dengan alat', h: 'Facial biasa vs facial dengan alat, apa bedanya?', f: 'Carousel' },
+      { t: 'Hal yang sebaiknya dilakukan sebelum facial treatment', h: 'Mau facial pertama kali? Siapkan ini dulu.', f: 'Carousel' },
+      { t: 'Hal yang perlu diperhatikan setelah facial treatment', h: 'Sudah facial? Ini tips merawat wajah setelahnya.', f: 'Stories' },
+      { t: 'Mitos dan fakta seputar facial treatment', h: 'Masih percaya mitos facial ini?', f: 'Reels' },
+      { t: 'Kenapa kulit wajah butuh perawatan rutin?', h: 'Cuci muka aja belum tentu cukup, lho.', f: 'Single Post' },
+      { t: 'Mengenal tahapan dasar facial treatment', h: 'Penasaran apa saja tahapan facial?', f: 'Carousel' },
+      { t: 'Hydra Peel vs Microdermabrasion, mana yang cocok?', h: 'Pilih Hydra Peel atau Microdermabrasion?', f: 'Carousel' },
+      { t: 'Seberapa sering sebaiknya melakukan facial?', h: 'Facial sebulan sekali, cukup nggak ya?', f: 'Single Post' },
+      { t: 'Tanda wajah sedang butuh perhatian ekstra', h: 'Wajah mulai terasa kurang fresh? Perhatikan tanda ini.', f: 'Reels' },
+      { t: 'Kenapa konsultasi sebelum facial itu penting', h: 'Sebelum facial, kenapa perlu konsultasi dulu?', f: 'Single Post' }
+    ],
+    'Skin Concern & Solution': [
+      { t: 'Kenapa wajah terlihat kusam walau sudah cuci muka?', h: 'Sudah rajin cuci muka tapi wajah tetap kusam?', f: 'Reels' },
+      { t: 'Kulit terasa kusam karena cuaca panas di Kota Bima', h: 'Cuaca panas bikin wajah terasa kusam dan lelah?', f: 'Reels' },
+      { t: 'Komedo terasa menumpuk? Ini yang bisa membantu', h: 'Komedo balik lagi terus? Yuk pahami penyebabnya.', f: 'Carousel' },
+      { t: 'Tekstur wajah terasa kasar, apa solusinya?', h: 'Wajah terasa kasar saat disentuh?', f: 'Single Post' },
+      { t: 'Wajah terlihat lelah padahal sudah istirahat', h: 'Wajah terlihat capek walau tidur cukup?', f: 'Reels' },
+      { t: 'Kulit terasa kurang fresh di cuaca panas', h: 'Cuaca Kota Bima bikin kulit terasa lengket?', f: 'Stories' },
+      { t: 'Bingung memilih facial yang cocok untuk wajahmu', h: 'Banyak pilihan facial bikin bingung?', f: 'Carousel' },
+      { t: 'Pori-pori terlihat besar, ini hal yang perlu dipahami', h: 'Pori terlihat besar bikin kurang pede?', f: 'Single Post' },
+      { t: 'Wajah terasa berminyak sepanjang hari', h: 'Wajah cepat berminyak dari pagi sampai sore?', f: 'Reels' },
+      { t: 'Kulit terasa kering dan kurang nyaman', h: 'Kulit terasa kering dan ketarik?', f: 'Single Post' },
+      { t: 'Warna kulit terlihat kurang merata', h: 'Warna wajah terlihat belang dan kurang rata?', f: 'Carousel' }
+    ],
+    'Treatment Experience': [
+      { t: 'Step-by-step facial treatment di DenanavBeauty Salon', h: 'Penasaran serunya facial di DenanavBeauty Salon?', f: 'Reels' },
+      { t: 'Self-care wajah setelah aktivitas seharian', h: 'Capek setelah seharian beraktivitas? Sempatkan self-care.', f: 'Stories' },
+      { t: 'Suasana treatment room yang bersih dan nyaman', h: 'Intip suasana treatment room kami.', f: 'Stories' },
+      { t: 'Proses Hydra Peel dari awal sampai selesai', h: 'Begini proses Hydra Peel di tempat kami.', f: 'Reels' },
+      { t: 'Totok wajah untuk momen relaksasi sejenak', h: 'Self-care sebentar lewat totok wajah.', f: 'Reels' },
+      { t: 'Pengalaman facial pertama kali, apa yang dirasakan?', h: 'Baru pertama facial? Begini rasanya.', f: 'Carousel' },
+      { t: 'Alat dan persiapan sebelum treatment dimulai', h: 'Kebersihan alat jadi prioritas kami.', f: 'Stories' }
+    ],
+    'Testimonial & Trust': [
+      { t: 'Cerita customer setelah rutin facial treatment', h: 'Dengar cerita customer kami yuk.', f: 'Carousel' },
+      { t: 'FAQ calon customer sebelum facial pertama', h: 'Pertanyaan yang sering ditanyakan sebelum facial.', f: 'Carousel' },
+      { t: 'Kenapa customer merasa nyaman treatment di sini', h: 'Hal kecil yang bikin treatment terasa nyaman.', f: 'Single Post' },
+      { t: 'Bagaimana kami menjelaskan treatment sebelum mulai', h: 'Sebelum mulai, kami jelaskan dulu prosesnya.', f: 'Reels' },
+      { t: 'Komitmen kebersihan di setiap treatment', h: 'Kebersihan adalah hal yang tidak kami tawar.', f: 'Single Post' }
+    ],
+    'Promo & Booking Awareness': [
+      { t: 'Facial treatment mulai Rp350.000, cocok untuk siapa?', h: 'Facial treatment mulai Rp350.000, ini untukmu?', f: 'Single Post' },
+      { t: 'Cara booking facial treatment di DenanavBeauty Salon', h: 'Mau facial? Begini cara bookingnya.', f: 'Carousel' },
+      { t: 'Reminder self-care mingguan untuk wajahmu', h: 'Sudah luangkan waktu untuk wajahmu minggu ini?', f: 'Stories' },
+      { t: 'Cek slot treatment facial minggu ini', h: 'Slot treatment minggu ini sudah mulai terisi.', f: 'Stories' },
+      { t: 'Kenapa konsultasi dulu sebelum booking itu membantu', h: 'Bingung pilih treatment? Konsultasi dulu yuk.', f: 'Single Post' }
+    ]
+  };
+
+  var CTA_BANK = {
+    'Facial Education': ['Simpan dulu kalau kamu lagi cari info facial di Kota Bima.', 'Konsultasi dulu untuk kenali treatment yang cocok untukmu.', 'Simpan dulu untuk referensi facial kamu.'],
+    'Skin Concern & Solution': ['Konsultasikan dulu kondisi kulitmu dengan tim kami.', 'Kirim pesan kalau ingin tahu treatment yang cocok.', 'Boleh tanya dulu di komentar atau WhatsApp.'],
+    'Treatment Experience': ['Booking facial treatment via website atau WhatsApp.', 'Cek slot treatment minggu ini lewat website atau WhatsApp.', 'Konsultasi dulu sebelum treatment pertamamu.'],
+    'Testimonial & Trust': ['Konsultasi dulu sebelum booking, kami bantu jelaskan.', 'Hubungi kami via website atau WhatsApp untuk tanya-tanya.', 'Simpan dulu kalau kamu sedang cari facial terpercaya di Kota Bima.'],
+    'Promo & Booking Awareness': ['Booking facial treatment via website atau WhatsApp.', 'Cek slot treatment minggu ini sebelum penuh.', 'Konsultasi dulu, lalu booking via website atau WhatsApp.']
+  };
+
+  var HASHTAG_BANK = ['#DenanavBeautySalon', '#FacialBima', '#SalonBima', '#FacialTreatment', '#PerawatanWajah', '#HydraPeel', '#Microdermabrasion', '#TotokWajah', '#FacialKotaBima', '#KulitFresh'];
+
+  /* ---------- Utils ---------- */
+  function toISO(d) { return d.toISOString().slice(0, 10); }
+  function dayName(d) { return ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][d.getDay()]; }
+  function fmtDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso + 'T00:00:00');
+    if (isNaN(d)) return iso;
+    var m = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    return d.getDate() + ' ' + m[d.getMonth()] + ' ' + d.getFullYear();
+  }
+  function uid() { return 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function lines(s) { return String(s || '').split('\n').map(function (x) { return x.trim(); }).filter(Boolean); }
+
+  function load(key, fallback) {
+    try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+    catch (e) { return fallback; }
+  }
+  function save(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch (e) { return false; }
+  }
+
+  function getBrand() { return load(STORAGE_KEYS.brandSnapshot, null); }
+  function getCampaign() { return load(STORAGE_KEYS.campaign, null); }
+  function getCalendar() { return load(STORAGE_KEYS.contentCalendar, []); }
+
+  /* ---------- Drafts ---------- */
+  function getDrafts() { return load(STORAGE_KEYS.contentDrafts, {}) || {}; }
+  function getDraft(id) { var s = getDrafts(); return s[id] || null; }
+  function hasDraft(id) { return !!getDraft(id); }
+  function putDraft(id, draft) { var s = getDrafts(); s[id] = draft; save(STORAGE_KEYS.contentDrafts, s); }
+  function draftCount() { return Object.keys(getDrafts()).length; }
+
+  /* ---------- Toast ---------- */
+  var toastEl;
+  function toast(msg) {
+    if (!toastEl) { toastEl = document.createElement('div'); toastEl.className = 'toast'; document.body.appendChild(toastEl); }
+    toastEl.innerHTML = '<span class="dot"></span>' + esc(msg);
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(function () { toastEl.classList.remove('show'); }, 2200);
+  }
+  function copyText(text, label) {
+    var done = function () { toast((label || 'Teks') + ' disalin ke clipboard'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+    } else { fallbackCopy(text); done(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  /* ============================================================
+     MOCK GENERATOR — 30-Day Content Calendar
+     ============================================================ */
+  function generateCalendar(brand, campaign) {
+    var buckets = PILLAR_PLAN.map(function (p) { return { pillar: p.pillar, n: p.count }; });
+    var sequence = [];
+    var remaining = buckets.map(function (b) { return b.n; });
+    var order = [0, 1, 2, 0, 1, 3, 0, 1, 4, 0]; // weighted cycle favoring education
+    var oi = 0, guard = 0;
+    while (sequence.length < 30 && guard < 500) {
+      guard++;
+      var idx = order[oi % order.length]; oi++;
+      if (remaining[idx] > 0) { sequence.push(buckets[idx].pillar); remaining[idx]--; }
+      else {
+        for (var k = 0; k < remaining.length; k++) { if (remaining[k] > 0) { sequence.push(buckets[k].pillar); remaining[k]--; break; } }
+      }
+    }
+
+    var topicCursor = {}; PILLARS.forEach(function (p) { topicCursor[p] = 0; });
+    var start = campaign && campaign.periodStart ? new Date(campaign.periodStart + 'T00:00:00') : new Date();
+    if (isNaN(start)) start = new Date();
+
+    var rows = [];
+    var liveUsed = false;
+    for (var i = 0; i < 30; i++) {
+      var pillar = sequence[i] || 'Facial Education';
+      var bank = TOPIC_BANK[pillar];
+      var item = bank[topicCursor[pillar] % bank.length];
+      topicCursor[pillar]++;
+
+      var d = new Date(start.getTime()); d.setDate(start.getDate() + i);
+
+      var format = item.f;
+      if (i < 7) { format = FIRST_WEEK_FORMATS[i]; }
+      if (!liveUsed && i === 17 && pillar === 'Treatment Experience') { format = 'Live'; liveUsed = true; }
+      // Avoid 3 Reels in a row anywhere (especially at the beginning).
+      if (format === 'Reels' && rows.length >= 2 && rows[rows.length - 1].format === 'Reels' && rows[rows.length - 2].format === 'Reels') { format = 'Carousel'; }
+
+      // Objective mapping tuned for an Awareness campaign goal.
+      var objective = 'Awareness';
+      if (pillar === 'Facial Education') objective = 'Awareness';
+      else if (pillar === 'Skin Concern & Solution') objective = (i % 2 === 0) ? 'Awareness' : 'Engagement';
+      else if (pillar === 'Treatment Experience') objective = (i % 2 === 0) ? 'Engagement' : 'Trust';
+      else if (pillar === 'Testimonial & Trust') objective = 'Trust';
+      else if (pillar === 'Promo & Booking Awareness') objective = (i % 2 === 0) ? 'Booking' : 'Awareness';
+
+      var ctaArr = CTA_BANK[pillar];
+      var cta = ctaArr[i % ctaArr.length];
+
+      rows.push({
+        id: uid(),
+        date: toISO(d),
+        day: dayName(d),
+        format: format,
+        pillar: pillar,
+        topicTitle: item.t,
+        hook: item.h,
+        cta: cta,
+        objective: objective,
+        productionStatus: 'Idea'
+      });
+    }
+    return rows;
+  }
+
+  /* ============================================================
+     MOCK GENERATOR — Content Detail
+     ============================================================ */
+  function generateDetail(row, brand) {
+    brand = brand || {};
+    var price = brand.entryPrice || 'Rp350.000';
+    var pillar = row.pillar;
+    var topic = row.topicTitle;
+    var hook = row.hook;
+
+    var intro = {
+      'Facial Education': 'Banyak yang masih bingung soal perawatan wajah. Lewat konten ini kita bahas pelan-pelan supaya lebih mudah dipahami.',
+      'Skin Concern & Solution': 'Kondisi wajah seperti ini cukup umum dialami. Yuk pahami pelan-pelan tanpa perlu khawatir berlebihan.',
+      'Treatment Experience': 'Biar lebih tenang sebelum treatment, yuk intip bagaimana prosesnya berlangsung di DenanavBeauty Salon.',
+      'Testimonial & Trust': 'Kenyamanan dan kepercayaan adalah hal yang kami jaga di setiap treatment.',
+      'Promo & Booking Awareness': 'Kalau kamu lagi cari facial treatment yang nyaman di Kota Bima, ini bisa jadi awal yang pas.'
+    }[pillar];
+
+    var caption = hook + '\n\n' + topic + '. ' + intro + '\n\n' +
+      'Di DenanavBeauty Salon, facial treatment kami fokus membantu kulit terlihat lebih fresh dan bersih lewat Microdermabrasion, Hydra Peel, dan totok wajah. Setiap treatment dijelaskan dulu sebelum dimulai, jadi kamu bisa lebih tenang.\n\n' +
+      'Hasil bisa berbeda pada setiap orang, jadi sebaiknya konsultasi dulu supaya treatment-nya sesuai dengan kebutuhan wajahmu.\n\n' +
+      row.cta + (price ? '\nFacial treatment mulai ' + price + '.' : '') + '\n\n' +
+      '📍 Kota Bima, NTB dan sekitarnya';
+
+    var shortCaption = hook + ' ' + row.cta + ' Facial treatment mulai ' + price + '. ✨';
+
+    var script = {
+      opening: hook,
+      sceneByScene: [
+        { time: '0–3 dtk', visual: 'Close-up wajah customer yang tenang / teks hook di layar dengan nuansa putih lembut.', voiceover: hook, overlayText: hook },
+        { time: '4–10 dtk', visual: 'Tampilkan konteks: ' + (pillar === 'Skin Concern & Solution' ? 'gambaran keluhan wajah secara halus.' : 'suasana salon yang bersih dan nyaman.'), voiceover: intro, overlayText: 'Kenali dulu kebutuhan wajahmu' },
+        { time: '11–20 dtk', visual: 'Perlihatkan proses facial treatment (Microdermabrasion / Hydra Peel / totok wajah) dengan pencahayaan terang.', voiceover: 'Facial treatment di DenanavBeauty Salon membantu kulit terlihat lebih fresh dan bersih, dengan proses yang dijelaskan dulu sebelum dimulai.', overlayText: 'Facial treatment yang nyaman & modern' },
+        { time: '21–30 dtk', visual: 'Tutup dengan logo / suasana hangat dan teks CTA lembut.', voiceover: row.cta + ' Hasil bisa berbeda pada setiap orang, konsultasikan dulu ya.', overlayText: row.cta }
+      ],
+      closingCTA: row.cta + ' — facial treatment mulai ' + price + '.'
+    };
+
+    var visualDirection = 'Gaya clean minimal dengan nuansa putih dan sentuhan gold. Pencahayaan terang dan lembut, suasana salon yang tenang, bersih, dan elegan. ' +
+      'Fokus pada kenyamanan: handuk bersih, alat tertata rapi, dan ekspresi customer yang rileks. Hindari kesan klinis atau menakutkan. ' +
+      (pillar === 'Treatment Experience' ? 'Tampilkan langkah treatment secara halus dan menenangkan.' : 'Gunakan visual sederhana yang mudah direkam dengan smartphone.');
+
+    var overlayOptions = [hook, 'Facial treatment yang nyaman & modern', 'Kenali dulu kebutuhan wajahmu', 'Mulai ' + price, row.cta];
+
+    var tags = HASHTAG_BANK.slice(0, 6);
+    if (pillar === 'Promo & Booking Awareness') tags = ['#DenanavBeautySalon', '#FacialBima', '#SalonBima', '#FacialTreatment', '#FacialKotaBima', '#PerawatanWajah'];
+    if (pillar === 'Treatment Experience') tags = ['#DenanavBeautySalon', '#FacialTreatment', '#HydraPeel', '#Microdermabrasion', '#TotokWajah', '#FacialBima'];
+
+    var checklist = [
+      'Siapkan ruang treatment yang bersih dan rapi.',
+      'Pastikan pencahayaan terang dan lembut (cahaya natural lebih baik).',
+      'Rekam dengan smartphone dalam mode stabil / pakai tripod kecil.',
+      'Tampilkan proses facial secara halus, tidak terburu-buru.',
+      'Tambahkan teks overlay sesuai pilihan di atas.',
+      'Gunakan musik latar yang tenang dan lembut.',
+      'Periksa ulang caption: hindari klaim medis & janji hasil pasti.'
+    ];
+    if (pillar === 'Testimonial & Trust') {
+      checklist.unshift('Gunakan review customer asli dan minta izin sebelum menampilkan foto/video.');
+    }
+
+    return {
+      caption: caption,
+      shortCaption: shortCaption,
+      script: script,
+      visualDirection: visualDirection,
+      overlayOptions: overlayOptions,
+      hashtags: tags,
+      checklist: checklist
+    };
+  }
+
+  /* Build plain-text versions of a detail object for copy/export. */
+  function detailTexts(d) {
+    var scriptText = 'Opening: ' + d.script.opening + '\n\n' + d.script.sceneByScene.map(function (s) {
+      return s.time + '\nVoiceover: ' + s.voiceover + '\nVisual: ' + s.visual + '\nOverlay: ' + s.overlayText;
+    }).join('\n\n') + '\n\nClosing: ' + d.script.closingCTA;
+    var hashtags = d.hashtags.join(' ');
+    var fullText = '=== CAPTION ===\n' + d.caption +
+      '\n\n=== CAPTION SINGKAT ===\n' + d.shortCaption +
+      '\n\n=== VIDEO SCRIPT ===\n' + scriptText +
+      '\n\n=== VISUAL DIRECTION ===\n' + d.visualDirection +
+      '\n\n=== TEXT OVERLAY ===\n' + d.overlayOptions.join('\n') +
+      '\n\n=== HASHTAGS ===\n' + hashtags +
+      '\n\n=== PRODUCTION CHECKLIST ===\n' + d.checklist.map(function (c) { return '- ' + c; }).join('\n');
+    return { script: scriptText, hashtags: hashtags, full: fullText };
+  }
+
+  /* ============================================================
+     CSV EXPORT
+     ============================================================ */
+  function exportCSV(rows) {
+    var headers = ['Date', 'Day', 'Format', 'Pillar', 'Topic Title', 'Hook', 'CTA', 'Objective', 'Production Status'];
+    var cell = function (v) { var s = String(v == null ? '' : v); return '"' + s.replace(/"/g, '""') + '"'; };
+    var out = [headers.map(cell).join(',')];
+    rows.forEach(function (r) {
+      out.push([r.date, r.day, r.format, r.pillar, r.topicTitle, r.hook, r.cta, r.objective, r.productionStatus].map(cell).join(','));
+    });
+    var csv = '\ufeff' + out.join('\r\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'denana-content-calendar.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    toast('Rencana konten diekspor ke CSV');
+  }
+
+  function calendarToText(rows) {
+    return rows.map(function (r, i) {
+      return (i + 1) + '. ' + fmtDate(r.date) + ' (' + r.day + ') — ' + r.format + ' — ' + r.pillar + '\n' +
+        '   Topik: ' + r.topicTitle + '\n   Hook: ' + r.hook + '\n   CTA: ' + r.cta + '\n   Objective: ' + r.objective + ' | Status: ' + r.productionStatus;
+    }).join('\n\n');
+  }
+
+  /* ============================================================
+     ROUTER & VIEWS
+     ============================================================ */
+  var root, navLinks;
+  var ROUTES = ['home', 'brand-setup', 'campaign-setup', 'content-calendar'];
+
+  function currentRoute() {
+    var h = (location.hash || '#home').replace('#', '');
+    return ROUTES.indexOf(h) >= 0 ? h : 'home';
+  }
+
+  function render() {
+    try {
+      var route = currentRoute();
+      if (navLinks) navLinks.forEach(function (l) { l.classList.toggle('active', l.getAttribute('data-route') === route); });
+      try { document.body.classList.toggle('wide-page', route === 'content-calendar'); } catch (e) {}
+      try { window.scrollTo(0, 0); } catch (e) {}
+      // Nav-level flow guard: redirect (never blank) if prerequisites are missing.
+      if (route === 'content-calendar') {
+        var s = setupState();
+        if (!s.brand) { toast('Lengkapi Profil Brand dulu agar rencana konten lebih sesuai.'); location.hash = '#brand-setup'; return; }
+        if (!s.campaign) { toast('Buat Rencana Campaign dulu sebelum generate rencana konten.'); location.hash = '#campaign-setup'; return; }
+      }
+      if (route === 'brand-setup') return renderBrandSetup();
+      if (route === 'campaign-setup') return renderCampaignSetup();
+      if (route === 'content-calendar') return renderCalendar();
+      return renderHome();
+    } catch (err) {
+      showErrorCard(err);
+    }
+  }
+
+  function showErrorCard(err) {
+    try { if (typeof console !== 'undefined' && console.error && err) console.error(err); } catch (e) {}
+    var target = root || (typeof document !== 'undefined' && (document.getElementById('view') || document.body));
+    if (!target) return;
+    target.innerHTML =
+      '<section class="page-head"><span class="notion-eyebrow">Oops</span><h1>Terjadi error kecil</h1></section>' +
+      '<section><div class="card"><div class="note" data-tone="warn"><span class="ni">⚠️</span><div>' +
+        '<strong>Terjadi error kecil. Coba refresh atau reset data lokal.</strong>' +
+        '<p class="notion-muted" style="margin:8px 0 0">Data prototype ini disimpan di browser kamu. Reset data lokal akan menghapus Profil Brand, Rencana Campaign, rencana konten, dan draft di perangkat ini.</p>' +
+      '</div></div>' +
+      '<div class="btn-row" style="margin-top:16px">' +
+        '<button id="errReload" class="btn">↻ Refresh halaman</button>' +
+        '<button id="errReset" class="btn ghost">🗑️ Reset data lokal</button>' +
+        '<a class="btn secondary" href="#home">Kembali ke Home</a>' +
+      '</div></div></section>';
+    var rl = document.getElementById('errReload'); if (rl) rl.onclick = function () { try { location.reload(); } catch (e) {} };
+    var rs = document.getElementById('errReset'); if (rs) rs.onclick = function () {
+      if (confirm('Reset semua data lokal prototype ini? Tindakan ini tidak bisa dibatalkan.')) {
+        try { [STORAGE_KEYS.brandSnapshot, STORAGE_KEYS.campaign, STORAGE_KEYS.contentCalendar, STORAGE_KEYS.contentDrafts].forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {}
+        location.hash = '#home';
+        try { location.reload(); } catch (e) { render(); }
+      }
+    };
+  }
+
+  function handleGlobalError(err) {
+    try { if (root && root.innerHTML && String(root.innerHTML).trim().length > 0) return; } catch (e) {}
+    showErrorCard(err);
+  }
+
+  /* ---------- HOME ---------- */
+  function renderHome() {
+    var brand = getBrand(), campaign = getCampaign(), cal = getCalendar();
+    var hasBrand = !!brand, hasCampaign = !!campaign, hasCal = cal && cal.length > 0;
+    var name = (brand && brand.businessName) || 'DenanavBeauty Salon';
+    var drafts = draftCount();
+
+    root.innerHTML =
+      '<section class="page-head">' +
+        '<span class="notion-eyebrow">Phase 1 · Organic Foundation</span>' +
+        '<h1>Denana Social Growth OS</h1>' +
+        '<p>Aplikasi internal untuk merencanakan konten sosial media DenanavBeauty Salon. Fokus saat ini: <strong>Facial Treatment</strong> — awareness untuk Instagram &amp; Facebook.</p>' +
+      '</section>' +
+      (!hasBrand ?
+        '<div class="empty"><div class="big">✨</div><h2>Mulai dengan menyiapkan profil DenanavBeauty Salon</h2><p>Isi atau tinjau Profil Brand dulu, lalu lanjut ke rencana campaign dan rencana konten 30 hari.</p><a class="btn" href="#brand-setup">Atur Profil Brand</a></div>'
+        : '') +
+      '<section><div class="grid grid-3">' +
+        statusCard('💄', 'Profil Brand', hasBrand ? 'ok' : 'warn', hasBrand ? 'Tersimpan' : 'Belum diisi',
+          hasBrand ? name : 'Isi data salon, layanan facial, CTA, dan tone visual.', hasBrand ? 'Edit Profil Brand' : 'Atur Profil Brand', '#brand-setup') +
+        statusCard('📅', 'Rencana Campaign', hasCampaign ? 'ok' : 'warn', hasCampaign ? 'Tersimpan' : 'Belum diisi',
+          hasCampaign ? (campaign.campaignName + ' · ' + campaign.campaignGoal) : 'Tentukan periode, tujuan awareness, dan platform utama.', hasCampaign ? 'Edit Rencana Campaign' : 'Buat Rencana Campaign', '#campaign-setup') +
+        statusCard('🗓️', 'Rencana Konten', hasCal ? 'ok' : 'warn', hasCal ? (cal.length + ' konten' + (drafts ? ' · ' + drafts + ' draft' : '')) : 'Kosong',
+          hasCal ? 'Rencana konten 30 hari siap ditinjau & diedit.' : 'Generate kalender konten 30 hari setelah profil dan campaign siap.', hasCal ? 'Lihat Rencana Konten' : 'Buat Rencana Konten', '#content-calendar') +
+      '</div></section>' +
+      '<section><div class="card"><h2>Langkah cepat</h2><p class="notion-muted">Ikuti alur sederhana ini dari awal sampai konten siap diproduksi.</p>' +
+        '<div class="btn-row" style="margin-top:14px">' +
+          '<a class="btn secondary" href="#brand-setup">1 · Profil Brand</a>' +
+          '<a class="btn secondary" href="#campaign-setup">2 · Rencana Campaign</a>' +
+          '<a class="btn secondary" href="#content-calendar">3 · Buat Rencana Konten</a>' +
+        '</div></div></section>' +
+      '<section><div class="note"><span class="ni">💡</span><div><strong>Catatan scope Phase 1.</strong> Aplikasi ini hanya untuk <strong>Facial Treatment</strong> (Microdermabrasion, Hydra Peel, totok wajah). Belum termasuk Ads, Lead Tracker, Dashboard Analytics, database, maupun login.</div></div></section>' +
+      footer();
+  }
+
+  function statusCard(icon, title, tone, pill, desc, btn, href) {
+    return '<article class="card status-card">' +
+      '<div class="ico">' + icon + '</div>' +
+      '<span class="status-pill ' + tone + '">' + esc(pill) + '</span>' +
+      '<h3>' + esc(title) + '</h3>' +
+      '<p class="notion-muted" style="flex:1;margin:0">' + esc(desc) + '</p>' +
+      '<a class="btn small" href="' + href + '">' + esc(btn) + '</a>' +
+    '</article>';
+  }
+
+  /* ---------- BRAND SETUP (Profil Brand) ---------- */
+  function renderBrandSetup() {
+    var data = getBrand() || Object.assign({}, defaultBrandSnapshot);
+    var fieldsHtml = BRAND_FIELDS.map(function (f) {
+      var val = data[f.key] != null ? data[f.key] : (defaultBrandSnapshot[f.key] || '');
+      var input;
+      if (f.type === 'textarea') input = '<textarea id="bf_' + f.key + '" rows="3">' + esc(val) + '</textarea>';
+      else input = '<input id="bf_' + f.key + '" type="text" value="' + esc(val) + '">';
+      return '<div class="field' + (f.full ? ' full' : '') + '" data-field="' + f.key + '">' +
+        '<label>' + esc(f.label) + (f.req ? ' <span class="req">*</span>' : '') + '</label>' + input +
+        '<p class="hint">' + esc(f.hint) + '</p></div>';
+    }).join('');
+
+    root.innerHTML =
+      '<section class="page-head"><span class="notion-eyebrow">Langkah 1</span><h1>Profil Brand</h1>' +
+        '<p>Tinjau dan simpan profil DenanavBeauty Salon. Data ini dipakai untuk membuat rencana konten dan caption. Tersimpan otomatis di perangkat ini.</p></section>' +
+      '<section><div class="card"><div class="form-grid">' + fieldsHtml + '</div>' +
+        '<div class="btn-row" style="margin-top:22px">' +
+          '<button id="saveBrand" class="btn">💾 Simpan Profil Brand</button>' +
+          '<button id="resetBrand" class="btn ghost">Kembalikan ke default</button>' +
+        '</div></div></section>' +
+      '<section><div class="note"><span class="ni">🧴</span><div>Layanan pada MVP ini dibatasi hanya <strong>Facial Treatment</strong>. Jangan menambahkan layanan rambut, makeup, bridal, nail, atau spa tubuh.</div></div></section>' +
+      footer();
+
+    document.getElementById('saveBrand').onclick = saveBrandForm;
+    document.getElementById('resetBrand').onclick = function () {
+      BRAND_FIELDS.forEach(function (f) { document.getElementById('bf_' + f.key).value = defaultBrandSnapshot[f.key] || ''; });
+      toast('Form dikembalikan ke default');
+    };
+  }
+
+  function saveBrandForm() {
+    var data = {}, firstInvalid = null;
+    document.querySelectorAll('.field').forEach(function (el) { el.classList.remove('invalid'); });
+    BRAND_FIELDS.forEach(function (f) {
+      var v = (document.getElementById('bf_' + f.key).value || '').trim();
+      data[f.key] = v;
+      if (f.req && !v) {
+        var wrap = document.querySelector('.field[data-field="' + f.key + '"]');
+        if (wrap) { wrap.classList.add('invalid'); if (!firstInvalid) firstInvalid = wrap; }
+      }
+    });
+    if (firstInvalid) { firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' }); toast('Lengkapi dulu field wajib (*)'); return; }
+    save(STORAGE_KEYS.brandSnapshot, data);
+    toast('Profil brand tersimpan ✅');
+  }
+
+  /* ---------- CAMPAIGN SETUP (Rencana Campaign) ---------- */
+  function renderCampaignSetup() {
+    var c = getCampaign() || defaultCampaign();
+    root.innerHTML =
+      '<section class="page-head"><span class="notion-eyebrow">Langkah 2</span><h1>Rencana Campaign</h1>' +
+        '<p>Atur campaign awareness pertama untuk Facial Treatment. Periode ini dipakai untuk menentukan tanggal di rencana konten 30 hari.</p></section>' +
+      '<section><div class="card"><div class="form-grid">' +
+        cfield('campaignName', 'Nama Campaign', c.campaignName, 'Nama campaign bulan ini.') +
+        cselect('campaignGoal', 'Tujuan Campaign', c.campaignGoal, ['Awareness', 'Engagement', 'Trust', 'Booking'], 'Default Awareness untuk bulan pertama.') +
+        cfield('periodStart', 'Periode Mulai', c.periodStart, 'Tanggal mulai campaign.', 'date') +
+        cfield('periodEnd', 'Periode Selesai', c.periodEnd, 'Tanggal selesai campaign.', 'date') +
+        cfield('priorityService', 'Layanan Prioritas', 'Facial Treatment', 'Terkunci pada Facial Treatment untuk MVP ini.', 'text', true) +
+        cfield('mainPlatform', 'Platform Utama', c.mainPlatform, 'Platform sosial media utama.') +
+        cfield('postingFrequency', 'Frekuensi Posting', c.postingFrequency, 'Seberapa sering konten diposting.') +
+        '<div class="field full"><label>Catatan</label><textarea id="cf_notes" rows="3">' + esc(c.notes) + '</textarea><p class="hint">Fokus dan arahan campaign bulan ini.</p></div>' +
+      '</div>' +
+        '<div class="btn-row" style="margin-top:22px">' +
+          '<button id="saveCampaign" class="btn">💾 Simpan Rencana Campaign</button>' +
+          '<a class="btn secondary" href="#content-calendar">Lanjut ke Rencana Konten →</a>' +
+        '</div></div></section>' +
+      '<section><div class="note"><span class="ni">💬</span><div>Phase 1 tidak menyertakan field iklan berbayar maupun lead tracking. Layanan prioritas dikunci pada <strong>Facial Treatment</strong>.</div></div></section>' +
+      footer();
+
+    document.getElementById('saveCampaign').onclick = function () {
+      var data = {
+        campaignName: val('cf_campaignName') || 'Facial Awareness Campaign',
+        periodStart: val('cf_periodStart'),
+        periodEnd: val('cf_periodEnd'),
+        priorityService: 'Facial Treatment',
+        campaignGoal: val('cf_campaignGoal') || 'Awareness',
+        mainPlatform: val('cf_mainPlatform'),
+        postingFrequency: val('cf_postingFrequency'),
+        notes: val('cf_notes')
+      };
+      save(STORAGE_KEYS.campaign, data);
+      toast('Rencana campaign tersimpan ✅');
+    };
+  }
+  function val(id) { var e = document.getElementById(id); return e ? (e.value || '').trim() : ''; }
+  function cfield(key, label, value, hint, type, ro) {
+    return '<div class="field"><label>' + esc(label) + '</label>' +
+      '<input id="cf_' + key + '" type="' + (type || 'text') + '" value="' + esc(value || '') + '"' + (ro ? ' readonly' : '') + '>' +
+      '<p class="hint">' + esc(hint) + '</p></div>';
+  }
+  function cselect(key, label, value, opts, hint) {
+    return '<div class="field"><label>' + esc(label) + '</label><select id="cf_' + key + '">' +
+      opts.map(function (o) { return '<option' + (o === value ? ' selected' : '') + '>' + esc(o) + '</option>'; }).join('') +
+      '</select><p class="hint">' + esc(hint) + '</p></div>';
+  }
+
+  /* ---------- CONTENT CALENDAR (Rencana Konten) ---------- */
+  var filterPillar = 'all', filterFormat = 'all';
+  function renderCalendar() {
+    var brand = getBrand(), campaign = getCampaign(), cal = getCalendar();
+
+    var head = '<section class="page-head"><span class="notion-eyebrow">Langkah 3</span><h1>Rencana Konten</h1>' +
+      '<p>Rencana konten 30 hari untuk campaign awareness Facial Treatment. Semua baris bisa diedit, dan otomatis tersimpan di perangkat ini.</p></section>';
+
+    if (!cal || cal.length === 0) {
+      var s0 = setupState();
+      if (!s0.brand || !s0.campaign) {
+        root.innerHTML = head + '<section>' + setupGateCard(s0) + '</section>' + footer();
+        return;
+      }
+      root.innerHTML = head +
+        '<section><div class="empty"><div class="big">🗓️</div><h2>Siap membuat rencana konten</h2>' +
+        '<p>Buat rencana konten 30 hari berisi ide konten Facial Treatment lengkap dengan format, pilar, hook, CTA, dan objective.</p>' +
+        '<button id="genCal" class="btn">✨ Buat Rencana Konten 30 Hari</button></div></section>' + footer();
+      document.getElementById('genCal').onclick = doGenerate;
+      return;
+    }
+
+    var filtered = cal.filter(function (r) {
+      return (filterPillar === 'all' || r.pillar === filterPillar) && (filterFormat === 'all' || r.format === filterFormat);
+    });
+    var drafts = draftCount();
+
+    var toolbar = '<div class="toolbar">' +
+      '<select id="fPillar"><option value="all">Semua Pilar</option>' + PILLARS.map(function (p) { return '<option value="' + esc(p) + '"' + (filterPillar === p ? ' selected' : '') + '>' + esc(p) + '</option>'; }).join('') + '</select>' +
+      '<select id="fFormat"><option value="all">Semua Format</option>' + FORMATS.map(function (f) { return '<option value="' + esc(f) + '"' + (filterFormat === f ? ' selected' : '') + '>' + esc(f) + '</option>'; }).join('') + '</select>' +
+      '<span class="notion-muted" style="font-size:13px">' + filtered.length + ' / ' + cal.length + ' konten' + (drafts ? ' · ' + drafts + ' draft tersimpan' : '') + '</span>' +
+      '<span class="spacer"></span>' +
+      '<button id="copyCal" class="btn ghost small">📋 Copy</button>' +
+      '<button id="csvCal" class="btn secondary small">⬇️ Export CSV</button>' +
+      '<button id="regenCal" class="btn small">↻ Buat Ulang</button>' +
+    '</div>';
+
+    var rowsHtml = filtered.map(buildRow).join('');
+    var table = '<div class="cal-wrap"><table class="cal"><thead><tr>' +
+      ['Tanggal', 'Format', 'Pilar', 'Topik & Hook', 'CTA', 'Objective', 'Status', 'Aksi'].map(function (h) { return '<th>' + h + '</th>'; }).join('') +
+      '</tr></thead><tbody>' + rowsHtml + '</tbody></table></div>';
+
+    root.innerHTML = head + '<section>' + toolbar + table + '</section>' +
+      '<section><div class="note"><span class="ni">✏️</span><div>Klik sel mana pun untuk mengedit. Ubah status produksi lewat dropdown. Tekan <strong>Buat</strong> untuk membuat caption, script, visual direction, dan checklist — lalu simpan sebagai draft.</div></div></section>' + footer();
+
+    document.getElementById('fPillar').onchange = function () { filterPillar = this.value; renderCalendar(); };
+    document.getElementById('fFormat').onchange = function () { filterFormat = this.value; renderCalendar(); };
+    document.getElementById('csvCal').onclick = function () { exportCSV(getCalendar()); };
+    document.getElementById('copyCal').onclick = function () { copyText(calendarToText(getCalendar()), 'Rencana konten'); };
+    document.getElementById('regenCal').onclick = function () {
+      if (confirm('Buat ulang akan mengganti rencana konten saat ini. Draft konten yang sudah tersimpan tidak ikut terhapus. Lanjutkan?')) doGenerate();
+    };
+    bindRowEvents();
+  }
+
+  function setupState() { return { brand: !!getBrand(), campaign: !!getCampaign() }; }
+  function guardGenerate() {
+    var s = setupState();
+    if (!s.brand) { toast('Lengkapi Profil Brand dulu agar rencana konten lebih sesuai.'); location.hash = '#brand-setup'; return false; }
+    if (!s.campaign) { toast('Buat Rencana Campaign dulu sebelum generate rencana konten.'); location.hash = '#campaign-setup'; return false; }
+    return true;
+  }
+  function gateStep(n, label, done, href, btn) {
+    return '<div class="gate-step"><span class="gate-ic ' + (done ? 'ok' : '') + '">' + (done ? '✓' : n) + '</span>' +
+      '<div class="gate-tx"><strong>' + esc(label) + '</strong><span>' + (done ? 'Sudah tersimpan' : 'Belum tersimpan') + '</span></div>' +
+      (done ? '<span class="status-pill ok">Selesai</span>' : '<a class="btn small" href="' + href + '">' + esc(btn) + '</a>') + '</div>';
+  }
+  function setupGateCard(s) {
+    return '<div class="card"><div class="note"><span class="ni">🔒</span><div><strong>Lengkapi 2 langkah ini dulu.</strong> Rencana konten 30 hari bisa dibuat setelah Profil Brand dan Rencana Campaign tersimpan.</div></div>' +
+      '<div class="gate-steps">' + gateStep(1, 'Profil Brand', s.brand, '#brand-setup', 'Atur Profil Brand') + gateStep(2, 'Rencana Campaign', s.campaign, '#campaign-setup', 'Atur Rencana Campaign') + '</div></div>';
+  }
+  function doGenerate() {
+    if (!guardGenerate()) return;
+    var rows = generateCalendar(getBrand() || defaultBrandSnapshot, getCampaign() || defaultCampaign());
+    save(STORAGE_KEYS.contentCalendar, rows);
+    filterPillar = 'all'; filterFormat = 'all';
+    toast('30 konten berhasil dibuat ✨');
+    renderCalendar();
+  }
+
+  function buildRow(r) {
+    var sc = pillarShort(r.pillar);
+    var draft = hasDraft(r.id);
+    var draftTag = draft ? '<div style="margin-top:6px"><span class="draft-badge">✓ Draft tersimpan</span></div>' : '';
+    var detailLabel = draft ? '📝 Draft' : '✍️ Buat';
+    return '<tr data-id="' + r.id + '">' +
+      '<td class="date">' + fmtDate(r.date) + '<small>' + esc(r.day) + '</small></td>' +
+      '<td>' + selectCell(r.id, 'format', r.format, FORMATS) + '</td>' +
+      '<td><span class="pill pill-' + sc + '">' + esc(r.pillar) + '</span>' + selectCell(r.id, 'pillar', r.pillar, PILLARS, true) + '</td>' +
+      '<td><textarea class="cell-input" data-id="' + r.id + '" data-k="topicTitle">' + esc(r.topicTitle) + '</textarea>' +
+        '<textarea class="cell-input" data-id="' + r.id + '" data-k="hook" style="color:var(--notion-text-soft);font-style:italic">' + esc(r.hook) + '</textarea>' + draftTag + '</td>' +
+      '<td><textarea class="cell-input" data-id="' + r.id + '" data-k="cta">' + esc(r.cta) + '</textarea></td>' +
+      '<td>' + selectCell(r.id, 'objective', r.objective, OBJECTIVES) + '</td>' +
+      '<td>' + selectCell(r.id, 'productionStatus', r.productionStatus, STATUSES) + '</td>' +
+      '<td><div class="row-actions">' +
+        '<button class="btn small" data-act="detail" data-id="' + r.id + '">' + detailLabel + '</button>' +
+        '<button class="btn ghost tiny" data-act="copy" data-id="' + r.id + '">Copy</button>' +
+      '</div></td>' +
+    '</tr>';
+  }
+  function selectCell(id, key, value, opts, hidden) {
+    return '<select class="cell-select" data-id="' + id + '" data-k="' + key + '"' + (hidden ? ' style="margin-top:4px"' : '') + '>' +
+      opts.map(function (o) { return '<option' + (o === value ? ' selected' : '') + '>' + esc(o) + '</option>'; }).join('') + '</select>';
+  }
+
+  function bindRowEvents() {
+    root.querySelectorAll('.cell-input').forEach(function (el) {
+      el.addEventListener('change', function () { updateRowField(this.getAttribute('data-id'), this.getAttribute('data-k'), this.value); });
+    });
+    root.querySelectorAll('.cell-select').forEach(function (el) {
+      el.addEventListener('change', function () {
+        updateRowField(this.getAttribute('data-id'), this.getAttribute('data-k'), this.value);
+        if (this.getAttribute('data-k') === 'pillar') renderCalendar();
+      });
+    });
+    root.querySelectorAll('[data-act]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var id = this.getAttribute('data-id'), act = this.getAttribute('data-act');
+        if (act === 'detail') openDetail(id);
+        else if (act === 'copy') copyRow(id);
+      });
+    });
+  }
+  function updateRowField(id, key, value, silent) {
+    var cal = getCalendar();
+    for (var i = 0; i < cal.length; i++) { if (cal[i].id === id) { cal[i][key] = value; break; } }
+    save(STORAGE_KEYS.contentCalendar, cal);
+    if (!silent) toast('Perubahan tersimpan');
+  }
+  function findRow(id) { return getCalendar().filter(function (r) { return r.id === id; })[0]; }
+  function copyRow(id) {
+    var r = findRow(id); if (!r) return;
+    var txt = fmtDate(r.date) + ' (' + r.day + ') — ' + r.format + ' — ' + r.pillar + '\nTopik: ' + r.topicTitle + '\nHook: ' + r.hook + '\nCTA: ' + r.cta + '\nObjective: ' + r.objective + ' | Status: ' + r.productionStatus;
+    copyText(txt, 'Baris konten');
+  }
+
+  /* ---------- CONTENT DETAIL MODAL (Buat Caption & Script) ---------- */
+  var overlay;
+  function openDetail(id) {
+    var r = findRow(id); if (!r) return;
+    if (!overlay) { overlay = document.createElement('div'); overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+
+    var brand = getBrand() || defaultBrandSnapshot;
+    var existing = getDraft(id);
+    var fromDraft = !!existing;
+    var detail = fromDraft ? existing.detail : generateDetail(r, brand);
+    if (!detail || !detail.script || !Array.isArray(detail.script.sceneByScene) || !Array.isArray(detail.hashtags) || !Array.isArray(detail.overlayOptions) || !Array.isArray(detail.checklist)) {
+      detail = generateDetail(r, brand); fromDraft = false;
+    }
+
+    var close = function () { overlay.classList.remove('show'); document.body.style.overflow = ''; };
+
+    function build() {
+      var t = detailTexts(detail);
+      var scriptHtml = detail.script.sceneByScene.map(function (s) {
+        return '<div class="script-step"><div class="t">' + esc(s.time) + '</div><div><div class="vo">' + esc(s.voiceover) + '</div><div class="ov">🎬 ' + esc(s.visual) + '</div><div class="ov">📝 Overlay: ' + esc(s.overlayText) + '</div></div></div>';
+      }).join('');
+
+      var banner = fromDraft
+        ? '<div class="note" data-tone="saved" style="margin:0 0 16px"><span class="ni">✅</span><div><strong>Draft tersimpan.</strong> Kamu sedang melihat versi yang sudah disimpan' + (existing && existing.savedAt ? ' (' + fmtDateTime(existing.savedAt) + ')' : '') + '. Tekan <em>Buat Ulang</em> untuk versi baru.</div></div>'
+        : '';
+
+      overlay.innerHTML =
+        '<div class="modal">' +
+          '<div class="modal-head"><div class="mt"><span class="pill pill-' + pillarShort(r.pillar) + '">' + esc(r.pillar) + '</span>' +
+            '<h2 style="margin-top:8px">' + esc(r.topicTitle) + '</h2>' +
+            '<div class="meta">' + fmtDate(r.date) + ' · ' + esc(r.day) + ' · ' + esc(r.format) + ' · ' + esc(r.objective) + ' · Status: ' + esc(r.productionStatus) + '</div></div>' +
+            '<button class="x-btn" id="closeModal">×</button></div>' +
+          '<div class="modal-body">' + banner +
+            section(1, '📝', 'Caption', '<div class="detail-box">' + esc(detail.caption) + '</div>', detail.caption, 'Caption') +
+            section(2, '⚡', 'Caption Singkat', '<div class="detail-box">' + esc(detail.shortCaption) + '</div>', detail.shortCaption, 'Caption singkat') +
+            section(3, '🎥', 'Video Script (Reels / Facebook)', '<div class="detail-box" style="white-space:normal">' + scriptHtml + '</div>', t.script, 'Script') +
+            section(4, '🎨', 'Visual Direction', '<div class="detail-box">' + esc(detail.visualDirection) + '</div>', detail.visualDirection, 'Visual direction') +
+            section(5, '🔤', 'Pilihan Teks Overlay', '<ul class="chk">' + detail.overlayOptions.map(function (o) { return '<li>' + esc(o) + '</li>'; }).join('') + '</ul>', detail.overlayOptions.join('\n'), 'Overlay text') +
+            section(6, '#️⃣', 'Hashtags', '<div class="tag-list">' + detail.hashtags.map(function (x) { return '<span class="tag">' + esc(x) + '</span>'; }).join('') + '</div>', t.hashtags, 'Hashtags') +
+            section(7, '✅', 'Production Checklist', '<ul class="chk">' + detail.checklist.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>', detail.checklist.map(function (c) { return '- ' + c; }).join('\n'), 'Checklist') +
+            '<div class="note" style="margin-top:6px"><span class="ni">⚠️</span><div>Konten dibuat otomatis sebagai draft. Tinjau dulu sebelum diposting. Hindari klaim medis &amp; janji hasil pasti — “hasil dapat berbeda pada setiap orang”.</div></div>' +
+          '</div>' +
+          '<div class="modal-foot">' +
+            '<div class="copy-bar">' +
+              '<button class="btn ghost small" id="cCap">📋 Copy Caption</button>' +
+              '<button class="btn ghost small" id="cScr">📋 Copy Script</button>' +
+              '<button class="btn ghost small" id="cTag">📋 Copy Hashtags</button>' +
+              '<button class="btn secondary small" id="cAll">📋 Copy Semua</button>' +
+            '</div>' +
+            '<div class="foot-main">' +
+              (fromDraft ? '<button class="btn ghost small" id="regenBtn">↻ Buat Ulang</button>' : '') +
+              '<button class="btn" id="saveDraftBtn">💾 Simpan Draft Konten</button>' +
+              '<button class="btn ghost small" id="closeModal2">Selesai</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+      document.getElementById('closeModal').onclick = close;
+      document.getElementById('closeModal2').onclick = close;
+      document.getElementById('cCap').onclick = function () { copyText(detail.caption, 'Caption'); };
+      document.getElementById('cScr').onclick = function () { copyText(t.script, 'Script'); };
+      document.getElementById('cTag').onclick = function () { copyText(t.hashtags, 'Hashtags'); };
+      document.getElementById('cAll').onclick = function () { copyText(t.full, 'Semua detail konten'); };
+      document.getElementById('saveDraftBtn').onclick = saveDraftFlow;
+      var rb = document.getElementById('regenBtn');
+      if (rb) rb.onclick = function () {
+        if (confirm('Buat ulang konten dari ide ini? Draft yang tersimpan tidak berubah sampai kamu menekan Simpan Draft.')) {
+          detail = generateDetail(r, brand); fromDraft = false; build();
+          toast('Konten dibuat ulang');
+        }
+      };
+      overlay.querySelectorAll('.detail-block .copy-btn').forEach(function (btn) {
+        btn.onclick = function () { copyText(decodeURIComponent(btn.getAttribute('data-txt') || ''), btn.getAttribute('data-label') || 'Teks'); };
+      });
+    }
+
+    function saveDraftFlow() {
+      putDraft(r.id, { id: r.id, savedAt: new Date().toISOString(), topicTitle: r.topicTitle, pillar: r.pillar, format: r.format, detail: detail });
+      fromDraft = true; existing = getDraft(r.id);
+      toast('Draft konten tersimpan 💾');
+      // Gentle production workflow: suggest moving to Planned, never automatic.
+      var current = (findRow(r.id) || r).productionStatus;
+      if (current === 'Idea') {
+        if (confirm('Draft sudah tersimpan. Ubah status produksi konten ini dari "Idea" menjadi "Planned"?')) {
+          updateRowField(r.id, 'productionStatus', 'Planned', true);
+          r.productionStatus = 'Planned';
+          toast('Status diubah ke Planned');
+        }
+      }
+      build();
+      if (currentRoute() === 'content-calendar') renderCalendar();
+    }
+
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    overlay.onclick = function (e) { if (e.target === overlay) close(); };
+    build();
+  }
+
+  function section(n, icon, title, innerHtml, copyTextVal, label) {
+    var b64 = encodeURIComponent(copyTextVal);
+    return '<div class="detail-block"><div class="dh"><span class="sec-num">' + n + '</span><span class="sec-ico">' + icon + '</span><h3>' + esc(title) + '</h3>' +
+      '<button class="btn ghost tiny copy-btn" data-txt="' + b64 + '" data-label="' + esc(label) + '">Copy</button></div>' + innerHtml + '</div>';
+  }
+
+  function fmtDateTime(iso) {
+    var d = new Date(iso); if (isNaN(d)) return '';
+    return fmtDate(toISO(d)) + ', ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+  }
+
+  /* ---------- Footer ---------- */
+  function footer() {
+    return '<p class="footer-note">Denana Social Growth OS · Phase 1 MVP · Scope: Facial Treatment only · Data tersimpan lokal di browser ini.</p>';
+  }
+
+  /* ---------- Boot ---------- */
+  function boot() {
+    try {
+      root = document.getElementById('view');
+      navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+      window.addEventListener('error', function (e) { handleGlobalError(e && e.error); });
+      window.addEventListener('unhandledrejection', function () { handleGlobalError(); });
+      window.addEventListener('hashchange', render);
+      if (!location.hash) location.hash = '#home';
+      render();
+    } catch (err) {
+      showErrorCard(err);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();
+</script></body></html>
